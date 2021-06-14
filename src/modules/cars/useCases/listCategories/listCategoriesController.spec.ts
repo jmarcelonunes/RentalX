@@ -40,7 +40,7 @@ describe('List category controller', () => {
     const { token } = responseToken.body.authenticateInfo;
     await request(app).post('/categories')
       .send({
-        name: 'Conversisel test',
+        name: 'Conversisel hatch test',
         description: 'Categoria de carro convervisel',
       }).set({
         Authorization: `Bearer ${token}`,
@@ -54,6 +54,6 @@ describe('List category controller', () => {
     expect(response.status).toBe(200);
     expect(response.body.length).toBe(1);
     expect(response.body[0]).toHaveProperty('id');
-    expect(response.body[0].name).toEqual('Conversisel test');
+    expect(response.body[0].name).toEqual('Conversisel hatch test');
   });
 });
