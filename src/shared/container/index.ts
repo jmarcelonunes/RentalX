@@ -16,16 +16,34 @@ import { ISpecificationsRepository } from '@modules/cars/repositories/ISpecifica
 import { RentalsRepository } from '@modules/rentals/infra/typeorm/repositories/RentalsRepository';
 import { IRentalsRepository } from '@modules/rentals/repositories/IRentalsRepository';
 
-container.registerSingleton<ICategoriesRepository>('CategoriesRepository', CategoriesRepository);
+container.registerSingleton<ICategoriesRepository>(
+    'CategoriesRepository',
+    CategoriesRepository,
+);
 
-container.registerSingleton<ISpecificationsRepository>('SpecificationsRepository', SpecificationsRepository);
+container.registerSingleton<ISpecificationsRepository>(
+    'SpecificationsRepository',
+    SpecificationsRepository,
+);
 
-container.registerSingleton<IUsersRepository>('UsersRepository', UsersRepository);
+container.registerSingleton<IUsersRepository>(
+    'UsersRepository',
+    UsersRepository,
+);
 
 container.registerSingleton<ICarsRepository>('CarsRepository', CarsRepository);
 
-container.registerSingleton<ICarsImagesRepository>('CarsImagesRepository', CarsImagesRepository);
+container.registerSingleton<ICarsImagesRepository>(
+    'CarsImagesRepository',
+    CarsImagesRepository,
+);
 
-container.registerSingleton<IRentalsRepository>('RentalsRepository', RentalsRepository);
+container.registerSingleton<IRentalsRepository>(
+    'RentalsRepository',
+    RentalsRepository,
+);
 
-container.registerSingleton<IUsersTokensRepository>('UsersTokensRepository', UsersTokensRepository);
+container.registerSingleton<IUsersTokensRepository>(
+    'UsersTokensRepository',
+    UsersTokensRepository,
+);
