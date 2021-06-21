@@ -8,13 +8,13 @@ import createConnection from '@shared/infra/typeorm';
 
 let connection: Connection;
 describe('List category controller', () => {
-  beforeAll(async () => {
-    connection = await createConnection();
-    await connection.runMigrations();
-    const id = uuidV4();
-    const password = await hash('admin', 8);
-    await connection.query(
-      `INSERT INTO USERS(id, name, email, password, "isAdmin", created_at, driver_license)
+    beforeAll(async () => {
+        connection = await createConnection();
+        await connection.runMigrations();
+        const id = uuidV4();
+        const password = await hash('admin', 8);
+        await connection.query(
+            `INSERT INTO USERS(id, name, email, password, "isAdmin", created_at, driver_license)
         values('${id}',
         'admin',
         'admin@rentx.com.br',
@@ -23,37 +23,40 @@ describe('List category controller', () => {
         'now()',
         'XXXXX')
        `,
-    );
-  });
-
-  afterAll(async () => {
-    await connection.dropDatabase();
-    await connection.close();
-  });
-
-  it('Should be able to list all categories', async () => {
-    const responseToken = await request(app).post('/sessions').send({
-      email: 'admin@rentx.com.br',
-      password: 'admin',
+        );
     });
 
-    const { token } = responseToken.body.authenticateInfo;
-    await request(app).post('/categories')
-      .send({
-        name: 'Conversisel hatch test',
-        description: 'Categoria de carro convervisel',
-      }).set({
-        Authorization: `Bearer ${token}`,
-      });
+    afterAll(async () => {
+        await connection.dropDatabase();
+        await connection.close();
+    });
 
-    const response = await request(app).get('/categories')
-      .set({
-        Authorization: `Bearer ${token}`,
-      });
+    it('Should be able to list all categories', async () => {
+        const responseToken = await request(app).post('/sessions').send({
+            email: 'admin@rentx.com.br',
+            password: 'admin',
+        });
 
-    expect(response.status).toBe(200);
-    expect(response.body.length).toBe(1);
-    expect(response.body[0]).toHaveProperty('id');
-    expect(response.body[0].name).toEqual('Conversisel hatch test');
-  });
+        const { token } = responseToken.body.authenticateInfo;
+        await request(app)
+            .post('/categories')
+            .send({
+                name: 'Conversisel hatch test',
+                description: 'Categoria de carro convervisel',
+            })
+            .set({
+                Authorization: `Bearer ${token}`,
+            });
+
+        const response = await request(app)
+            .get('/categories')
+            .set({
+                Authorization: `Bearer ${token}`,
+            });
+
+        expect(response.status).toBe(200);
+        expect(response.body.length).toBe(1);
+        expect(response.body[0]).toHaveProperty('id');
+        expect(response.body[0].name).toEqual('Conversisel hatch test');
+    });
 });

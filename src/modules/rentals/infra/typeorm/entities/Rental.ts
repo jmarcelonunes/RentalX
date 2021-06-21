@@ -1,5 +1,11 @@
 import {
-  Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryColumn, UpdateDateColumn,
+    Column,
+    CreateDateColumn,
+    Entity,
+    JoinColumn,
+    ManyToOne,
+    PrimaryColumn,
+    UpdateDateColumn,
 } from 'typeorm';
 import { v4 as uuidV4 } from 'uuid';
 
@@ -39,9 +45,9 @@ class Rental {
     updated_at: Date;
 
     constructor() {
-      if (!this.id) {
-        this.id = uuidV4();
-      }
+        if (!this.id) {
+            this.id = uuidV4();
+        }
     }
 }
 

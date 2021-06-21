@@ -14,49 +14,58 @@ interface IRequest {
 
 @injectable()
 class CreateRentalUseCase {
-  constructor(
+    constructor(
         @inject('RentalsRepository')
         private rentalsRepository: IRentalsRepository,
         @inject('DayJsDateProvider')
         private dateProvider: IDateProvider,
         @inject('CarsRepository')
         private carsRepository: ICarsRepository,
-  ) {}
+    ) {}
 
-  async execute({
-    user_id,
-    car_id,
-    expected_return_date,
-  }:IRequest) :Promise<Rental> {
-    const minimumHour = 24;
+    async execute({
+        user_id,
+        car_id,
+        expected_return_date,
+    }: IRequest): Promise<Rental> {
+        const minimumHour = 24;
 
-    const carUnavailable = await this.rentalsRepository.findOpenRentalByCar(car_id);
-    if (carUnavailable) {
-      throw new AppError('This car is already booked');
+        const carUnavailable = await this.rentalsRepository.findOpenRentalByCar(
+            car_id,
+        );
+        if (carUnavailable) {
+            throw new AppError('This car is already booked');
+        }
+
+        const userHasRental = await this.rentalsRepository.findOpenRentalByUser(
+            user_id,
+        );
+        if (userHasRental) {
+            throw new AppError(
+                'There is already a rental in progress for this user',
+            );
+        }
+
+        const dateNow = this.dateProvider.dateNow();
+        const compare = this.dateProvider.compareInHours(
+            dateNow,
+            expected_return_date,
+        );
+
+        if (compare < minimumHour) {
+            throw new AppError('The rental should be longer than 24h');
+        }
+
+        const rental = await this.rentalsRepository.create({
+            user_id,
+            car_id,
+            expected_return_date,
+        });
+
+        await this.carsRepository.updateAvailable(car_id, false);
+
+        return rental;
     }
-
-    const userHasRental = await this.rentalsRepository.findOpenRentalByUser(user_id);
-    if (userHasRental) {
-      throw new AppError('There is already a rental in progress for this user');
-    }
-
-    const dateNow = this.dateProvider.dateNow();
-    const compare = this.dateProvider.compareInHours(dateNow, expected_return_date);
-
-    if (compare < minimumHour) {
-      throw new AppError('The rental should be longer than 24h');
-    }
-
-    const rental = await this.rentalsRepository.create({
-      user_id,
-      car_id,
-      expected_return_date,
-    });
-
-    await this.carsRepository.updateAvailable(car_id, false);
-
-    return rental;
-  }
 }
 
 export { CreateRentalUseCase };

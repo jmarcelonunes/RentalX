@@ -20,14 +20,19 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 app.use(router);
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-app.use((err: Error, request: Request, response: Response, next: NextFunction) => {
-  if (err instanceof AppError) {
-    return response.status(err.statusCode).json({ messsage: err.message });
-  }
-  return response.status(500).json({
-    status: 'error',
-    message: `Internal server error - ${err.message}`,
-  });
-});
+app.use(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    (err: Error, request: Request, response: Response, next: NextFunction) => {
+        if (err instanceof AppError) {
+            return response
+                .status(err.statusCode)
+                .json({ messsage: err.message });
+        }
+        return response.status(500).json({
+            status: 'error',
+            message: `Internal server error - ${err.message}`,
+        });
+    },
+);
 
 export { app };

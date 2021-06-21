@@ -10,21 +10,21 @@ interface IRequest {
 
 @injectable()
 class UpdateUserAvatarUseCase {
-  constructor(
+    constructor(
         @inject('UsersRepository')
         private usersRepository: IUsersRepository,
-  ) {}
+    ) {}
 
-  async execute({ user_id, avatarFile } : IRequest):Promise<void> {
-    const user = await this.usersRepository.findById(user_id);
+    async execute({ user_id, avatarFile }: IRequest): Promise<void> {
+        const user = await this.usersRepository.findById(user_id);
 
-    if (user.avatar) {
-      await deleteFile(`./tmp/avatar/${user.avatar}`);
+        if (user.avatar) {
+            await deleteFile(`./tmp/avatar/${user.avatar}`);
+        }
+
+        user.avatar = avatarFile;
+        await this.usersRepository.update(user);
     }
-
-    user.avatar = avatarFile;
-    await this.usersRepository.update(user);
-  }
 }
 
 export { UpdateUserAvatarUseCase };

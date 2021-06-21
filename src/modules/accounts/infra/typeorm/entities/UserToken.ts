@@ -1,5 +1,10 @@
 import {
-  Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryColumn,
+    Column,
+    CreateDateColumn,
+    Entity,
+    JoinColumn,
+    ManyToOne,
+    PrimaryColumn,
 } from 'typeorm';
 import { v4 as uuidV4 } from 'uuid';
 
@@ -27,9 +32,9 @@ class UserTokens {
     created_at: Date;
 
     constructor() {
-      if (!this.id) {
-        this.id = uuidV4();
-      }
+        if (!this.id) {
+            this.id = uuidV4();
+        }
     }
 }
 
