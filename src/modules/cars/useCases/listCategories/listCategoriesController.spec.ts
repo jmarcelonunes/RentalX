@@ -37,7 +37,7 @@ describe('List category controller', () => {
             password: 'admin',
         });
 
-        const { refresh_token } = responseToken.body.authenticateInfo;
+        const { token } = responseToken.body.authenticateInfo;
         await request(app)
             .post('/categories')
             .send({
@@ -45,13 +45,13 @@ describe('List category controller', () => {
                 description: 'Categoria de carro convervisel',
             })
             .set({
-                Authorization: `Bearer ${refresh_token}`,
+                Authorization: `Bearer ${token}`,
             });
 
         const response = await request(app)
             .get('/categories')
             .set({
-                Authorization: `Bearer ${refresh_token}`,
+                Authorization: `Bearer ${token}`,
             });
 
         expect(response.status).toBe(200);
