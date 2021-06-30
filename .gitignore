@@ -3,10 +3,9 @@
 coverage
 node_modules/
 build/
-temp/
 .env
 dist/
-
 tmp/*
 !tmp/.gitkeep
 .DS_Store
+ormconfig.json
