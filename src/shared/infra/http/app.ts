@@ -6,6 +6,7 @@ import swaggerUi from 'swagger-ui-express';
 import 'dotenv/config';
 import upload from '@config/upload';
 import { AppError } from '@shared/errors/AppError';
+import rateLimiter from '@shared/infra/http/middlewares/rateLimiter';
 import createConnection from '@shared/infra/typeorm';
 
 import swaggerFile from '../../../swagger.json';
@@ -14,6 +15,8 @@ import '@shared/container';
 
 createConnection();
 const app = express();
+
+app.use(rateLimiter);
 
 app.use(express.json());
 
